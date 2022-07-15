@@ -1,6 +1,6 @@
 import { createContext, useReducer } from "react";
-import { clienteAxiosValhalla } from "../../config/axios";
-import { Authorization} from "../../config/tokenAuth";
+import { clienteAxios, clienteAxiosValhalla } from "../../config/axios";
+import { Authorization, tokenAuth} from "../../config/tokenAuth";
 import { types } from "../../types";
 import AuthReducer from "./AuthReducer";
 
@@ -14,8 +14,8 @@ export const AuthProvider = ({children}) => {
         mensaje: null,
         cargando: true,
         errorLogin: false,
-        usuarioName: localStorage.getItem('username'),
-        rolesUsuario: localStorage.getItem('roles')
+        // usuarioName: localStorage.getItem('username'),
+        // rolesUsuario: localStorage.getItem('roles')
     }
 
     const [state, dispatch] = useReducer(AuthReducer, initialState);
@@ -23,19 +23,19 @@ export const AuthProvider = ({children}) => {
     const iniciarSesion = async (datos) => {
 
         try {   
-            const respuesta = await clienteAxiosValhalla.post('/auth/login',datos)
-            console.log(respuesta.data.authorities[0].authority); 
+            const respuesta = await clienteAxios.post('/auth/login',datos)
+            // console.log(respuesta.data.authorities[0]); 
             dispatch({
                 type: types.LOGIN_EXITOSO,
                 payload: respuesta.data
             })
-            //Obtener el usuario 
-            // usuarioAutenticado();
+            // Obtener el usuario 
+            usuarioAutenticado();
         } catch (error) {
-            console.log(error.response.data.message)
+            console.log(error.response)
             dispatch({
                 type: types.LOGIN_ERROR,
-                payload: error.response.data.message
+                payload: error.response.data.errores[0].msg
             })
         }
     }
@@ -54,28 +54,29 @@ export const AuthProvider = ({children}) => {
         },5000)
     }
 
-    // const usuarioAutenticado = async () => {
-    //     const token = localStorage.getItem('token');
-    //     if (token) {
-    //         //Funcion para enviar el token por header
-    //         Authorization(token)
-    //         // console.log(token);
-    //     }
+    const usuarioAutenticado = async () => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            //Funcion para enviar el token por header
+            // Authorization(token)
+            tokenAuth(token)
+            // console.log(token);
+        }
 
-    //     try {
-    //         const respuesta = await clienteAxiosValhalla.get('/account/api/detail');
-    //         // console.log(respuesta);
-    //         dispatch({
-    //             type: types.OBTENER_USUARIO,
-    //             payload: respuesta.data
-    //         })
-    //     } catch (error) {
-    //         console.log(error.response);
-    //         dispatch({
-    //             type: types.LOGIN_ERROR
-    //         })
-    //     }
-    // }
+        try {
+            const respuesta = await clienteAxios.get('/auth/login');
+            console.log(respuesta.data);
+            dispatch({
+                type: types.OBTENER_USUARIO,
+                payload: respuesta.data
+            })
+        } catch (error) {
+            console.log(error.response);
+            dispatch({
+                type: types.LOGIN_ERROR
+            })
+        }
+    }
 
 
     return (
@@ -84,7 +85,7 @@ export const AuthProvider = ({children}) => {
             iniciarSesion,
             cerrarSesion,
             ResetError,
-            // usuarioAutenticado
+            usuarioAutenticado
             }} >
             {children}
         </AuthContext.Provider>

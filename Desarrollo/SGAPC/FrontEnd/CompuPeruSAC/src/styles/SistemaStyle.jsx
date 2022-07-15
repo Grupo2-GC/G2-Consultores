@@ -1,27 +1,27 @@
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
-export const ContenedorSistema = styled(motion.div)`
+export const ContenedorSistema = styled.div`
 position: relative;
 width: 100%;
+height: 100%;
 background-image: linear-gradient(to bottom, #0058ff, #797eff, #ada7ff, #d8d2ff, #ffffff);
 `
 export const BoxSistema = styled.div`
-  display: grid;
-  height: 100vh;
+  min-height: 100vh;
 `
 export const SidebarStyle = styled.div`
-  position: absolute;
+  position: fixed;
+  height: 100vh;
   z-index: 99999;
   padding-top: 30px;
-  height: 100%;
   background: #0438af;
   width: 268px;
   left: ${props => props.activar ? '-268px' : '0'};
   transition: all 1s ease-in-out;
   @media screen and (max-width: 800px) {
         width: 100%;
-        height: 100vh;
+        height: 100%;
         position: absolute;
         left: ${props => props.activar ? '0' : '-100%'};
     }
@@ -39,7 +39,6 @@ export const SidebarStyle = styled.div`
   }
 `
 export const Paginas = styled.div`
-  width: 100%;
   margin-left: ${props => props.activar ? '0' : '268px'};
   background: #F5F6FA;
   height: 100vh;
