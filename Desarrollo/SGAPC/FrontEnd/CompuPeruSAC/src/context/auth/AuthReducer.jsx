@@ -4,15 +4,17 @@ export default (state, action) => {
 
     switch (action.type) {
         case types.LOGIN_EXITOSO:
-            localStorage.setItem('token',action.payload.token.tokenDeAcceso);
-            localStorage.setItem('username',action.payload.username);
-            localStorage.setItem('roles',action.payload.authorities[0].authority); 
+            // localStorage.setItem('token',action.payload.token.tokenDeAcceso);
+            localStorage.setItem('token',action.payload.token);
+            // localStorage.setItem('username',action.payload.username);
+            // localStorage.setItem('roles',action.payload.authorities[0]); 
             return{
                 ...state,
                 autenticado: true,
-                token: action.payload.token.tokenDeAcceso,
-                usuarioName: action.payload.username,
-                rolesUsuario: action.payload.authorities[0].authority
+                // token: action.payload.token.tokenDeAcceso,
+                token: action.payload.token,
+                // usuarioName: action.payload.username,
+                // rolesUsuario: action.payload.authorities[0]
             }
         case types.LOGIN_ERROR:
             localStorage.removeItem('token');

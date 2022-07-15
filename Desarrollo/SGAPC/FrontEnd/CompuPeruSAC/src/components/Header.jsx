@@ -7,10 +7,12 @@ import {
     Box1,
     Tooltip,
     BoxIcon,
+    UserStyle,
   } from "../styles/HeaderStyle";
 
 const Header = ({Sidebar, logout }) => {
-    const { cerrarSesion,rutaReset,usuarioName,rolesUsuario } = useContext(AuthContext);
+    const { cerrarSesion,usuario } = useContext(AuthContext);
+    console.log(usuario);
     const CerrarSesion = () => {
         cerrarSesion();
         logout();
@@ -24,14 +26,15 @@ const Header = ({Sidebar, logout }) => {
           </span>
         </Boton>
         <BoxIcon>
-          <Box1>
-            <Boton>
-              <span>
-                <i className="far fa-bell"></i>
+            <UserStyle>
+              {usuario && (
+                <span>
+                {/* <i className="far fa-bell"></i> */}
+                {usuario.usuario.nombre}
               </span>
-              <Tooltip>{`${usuarioName}, ${rolesUsuario}`}</Tooltip>
-            </Boton>
-          </Box1>
+              )}
+              {/* <Tooltip>{`${usuarioName}, ${rolesUsuario}`}</Tooltip> */}
+            </UserStyle>
           <Box1>
             <Boton onClick={CerrarSesion}>
               <span>

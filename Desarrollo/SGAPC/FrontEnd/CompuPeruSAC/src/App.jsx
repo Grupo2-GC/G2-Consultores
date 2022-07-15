@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./context/auth/AuthProvider";
+import { ColaboradorProvider } from "./context/colaboradores/ColaboradorProvider";
 import Login from "./pages/Login";
 import Sistema from "./pages/Sistema";
+import AlmacenArticulos from "./private/AlmacenArticulos";
+import AlmacenCategorias from "./private/AlmacenCategorias";
+import CrearPersonal from "./private/CrearPersonal";
+import Estritorio from "./private/Estritorio";
+import ListarPersonal from "./private/ListarPersonal";
 
 const App = () => {
   const [auth, setAuth] = useState(null);
@@ -20,6 +26,7 @@ const App = () => {
 
   return (
     <AuthProvider>
+      <ColaboradorProvider>
       <Routes>
         {/* Rutas Publicas */}
         {!auth && (
@@ -34,11 +41,18 @@ const App = () => {
             <Route
               path="/sistema"
               element={<Sistema logout={logout} />}
-            ></Route>
+            >
+              <Route index element={<Estritorio />} />
+              <Route path="addpersonal" element={<CrearPersonal />} />
+              <Route path="personal" element={<ListarPersonal />} />
+              <Route path="articulos" element={<AlmacenArticulos />} />
+              <Route path="categorias" element={<AlmacenCategorias />} />
+            </Route>
           </>
         )}
         <Route path="*" element={<Navigate to={auth ? "/sistema" : "/"} />} />
       </Routes>
+      </ColaboradorProvider>
     </AuthProvider>
   );
 };

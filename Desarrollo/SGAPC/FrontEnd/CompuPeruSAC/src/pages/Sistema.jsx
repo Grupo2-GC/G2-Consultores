@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, Outlet } from "react-router-dom";
 import {
   BoxLogo,
   BoxSistema,
@@ -10,17 +10,24 @@ import {
   SidebarStyle,
 } from "../styles/SistemaStyle";
 import Logo from "../assets/logoLogin.png";
-import Estritorio from "../private/Estritorio";
 import Header from "../components/Header";
 import { Boton } from "../styles/HeaderStyle";
+import Navegador from "../components/Navegador";
+import { AuthContext } from "../context/auth/AuthProvider";
 
 const Sistema = ({ logout }) => {
   const [activar, setActivar] = useState(false);
   const Sidebar = () => {
     setActivar(!activar);
   };
+  const {usuario,usuarioAutenticado} = useContext(AuthContext);
+  useEffect(() => {
+    usuarioAutenticado();
+  }, []);
   return (
-    <ContenedorSistema>
+    <>
+    {usuario && (
+      <ContenedorSistema>
       <BoxSistema>
         <SidebarStyle activar={activar}>
           <BoxLogo>
@@ -35,15 +42,18 @@ const Sistema = ({ logout }) => {
               </Boton>
             </BtnMobile>
           </BoxLogo>
+          <Navegador Sidebar={Sidebar} />
         </SidebarStyle>
         <Paginas activar={activar}>
           <Header Sidebar={Sidebar} logout={logout} />
           <ContenedorPages>
-            <Estritorio />
+            <Outlet />
           </ContenedorPages>
         </Paginas>
       </BoxSistema>
     </ContenedorSistema>
+    )}
+    </>
   );
 };
 
