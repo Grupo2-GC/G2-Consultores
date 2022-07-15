@@ -1,13 +1,12 @@
 package com.fisi.sgapcbackend.services;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.fisi.sgapcbackend.dto.PurchaseOrderDTO;
 
-import com.fisi.sgapcbackend.entities.PurchaseOrder;
+import com.fisi.sgapcbackend.response.PurchaseOrderResponse;
 
-public interface IPurchaseOrderService extends IGenericCRUD<PurchaseOrder, Long>{
+public interface IPurchaseOrderService extends IGenericCRUD<PurchaseOrderDTO, Long>{
 	
-	public Page<PurchaseOrder> getAll(Pageable pageable);
+	public PurchaseOrderResponse getAll(int numberOfPage, int sizeOfPage, String sortPeer, String sortDir);
 
 
 }

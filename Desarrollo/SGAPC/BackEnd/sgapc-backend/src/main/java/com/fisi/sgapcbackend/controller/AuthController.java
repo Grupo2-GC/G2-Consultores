@@ -21,13 +21,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fisi.sgapcbackend.dtos.LoginDTO;
+import com.fisi.sgapcbackend.dto.LoginDTO;
 import com.fisi.sgapcbackend.security.JwtAuthResponseDTO;
 import com.fisi.sgapcbackend.security.JwtTokenProvider;
 
-@CrossOrigin(origins = {"*"})
+@CrossOrigin(origins = {"*", "http://localhost:4200"})
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api")
 public class AuthController {
 	
 	@Autowired
@@ -37,7 +37,7 @@ public class AuthController {
 	private JwtTokenProvider jwtTokenProvider;
 	
 	
-	@PostMapping(value = "/login")
+	@PostMapping(value = "/auth/login")
 	public ResponseEntity<?> authenticate(@RequestBody LoginDTO loginDTO, BindingResult result){
 		
 		Map<String, Object> response = new HashMap<String, Object>();

@@ -2,17 +2,24 @@ package com.fisi.sgapcbackend.entities;
 
 //import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
-//import java.util.List;
 
-@Data
+@Getter
+@Setter
+@ToString
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -22,13 +29,12 @@ public class Supplier implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "telephone")
     private String telephone;
     @Column(unique = true, length = 12)
     private String ruc;
     @Column(length = 60)
     private String address;
-    @Column(length = 10)
-    private String pc;
     @Column(unique = true, length = 120)
     private String businessname;
 
@@ -37,12 +43,9 @@ public class Supplier implements Serializable {
     @Column(nullable = false, unique = true, length = 60)
     private String email;
 
-    //@JsonIgnoreProperties(value={"supplier", "hibernateLazyInitializer", "handler"}, allowSetters=true)
-    //@OneToMany(fetch = FetchType.LAZY, mappedBy = "supplier", cascade = CascadeType.ALL)
-    //private List<Entry> entries;
-
     @Column(name = "create_at", columnDefinition = "TIMESTAMP")
     private LocalDateTime createAt;
     @Column(name = "update_at", columnDefinition = "TIMESTAMP")
     private LocalDateTime updateAt;
+
 }

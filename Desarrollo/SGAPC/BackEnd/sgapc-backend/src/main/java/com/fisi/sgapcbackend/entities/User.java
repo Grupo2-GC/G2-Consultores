@@ -1,18 +1,26 @@
 package com.fisi.sgapcbackend.entities;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -51,10 +59,25 @@ public class User implements Serializable {
     @Column(length = 60)
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnoreProperties(value={"hibernateLazyInitializer", "handler"}, allowSetters=true)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,  CascadeType.MERGE})
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name="user_id"),
-            inverseJoinColumns=@JoinColumn(name="role_id"),
-            uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role_id"})})
+            inverseJoinColumns=@JoinColumn(name="role_id"))
     private Set<Role> roles = new HashSet<>();
+	
+	@JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private Set<Entry> entries = new HashSet<Entry>();
+	
+	
+	public void addRole(Role role) {
+		this.roles.add(role);
+		role.getUsers().add(this);
+	}
+	
+	public void removeRole(Role role) {
+		this.roles.remove(role);
+		role.getUsers().remove(this);
+	}
 }

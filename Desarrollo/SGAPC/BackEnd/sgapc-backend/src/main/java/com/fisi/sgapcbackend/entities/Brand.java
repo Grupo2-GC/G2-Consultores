@@ -1,14 +1,21 @@
 package com.fisi.sgapcbackend.entities;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 
-@Data
+
+import java.io.Serializable;
+
+@Getter
+@Setter
+@ToString
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -27,10 +34,7 @@ public class Brand implements Serializable {
 
     @Column(length = 120)
     private String description;
-
-    @Column(name = "create_at", columnDefinition = "TIMESTAMP")
-    private LocalDateTime createAt;
-
-    @Column(name = "update_at", columnDefinition = "TIMESTAMP")
-    private LocalDateTime updateAt;
+    
+    private String photo;
+    
 }

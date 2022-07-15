@@ -2,17 +2,16 @@ package com.fisi.sgapcbackend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import com.fisi.sgapcbackend.entities.User;
+import com.fisi.sgapcbackend.dto.UserDTO;
+import com.fisi.sgapcbackend.response.UserResponse;
 import com.fisi.sgapcbackend.services.IUserService;
+import com.fisi.sgapcbackend.utils.Constants;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -20,49 +19,41 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = {"*"})
+@CrossOrigin(origins = {"*", "http://localhost:4200"})
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api")
 public class UserController {
 
     @Autowired
     private IUserService userService;
-
-    @GetMapping(path = "/glu")
-    public ResponseEntity<?> index(){
-        Map<String, Object> response = new HashMap<>();
-
+    
+	@Secured({"ROLE_ADMIN"})
+    @GetMapping(path="/users")
+    public ResponseEntity<?> getAll(
+    		@RequestParam(value = "pageNo", defaultValue = Constants.NUMBER_OF_PAGE_PEER_DEFAULT, required = false) int numberOfPage,
+			@RequestParam(value = "pageSize", defaultValue = Constants.SIZE_OF_PAGE_PEER_DEFAULT, required = false) int sizeOfPage,
+			@RequestParam(value = "sortBy", defaultValue = Constants.SORT_PEER_DEFAULT, required = false) String sortPeer,
+			@RequestParam(value = "sortDir", defaultValue = Constants.SORT_DIRECTION_PEER_DEFAULT, required = false) String sortDir){
+    	
+    	Map<String, Object> response = new HashMap<>();
+    	
         try{
-            List<User> l = userService.getAll();
-            response.put("data",l);
-            return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
+        	UserResponse userResponse = userService.getAll(numberOfPage, sizeOfPage, sortPeer, sortDir);
+            response.put("data",userResponse);
+            return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 
         }catch (Exception e){
             response.put("error", "Error al realizar la consulta a la base de datos");
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    	
     }
     
-    @Secured({"ROLE_ADMIN"})
-    @GetMapping(value = "/glu/page/{page}")
-	public ResponseEntity<?> index(@PathVariable Integer page) {
-		Map<String, Object> response = new HashMap<>();
-		try {
-			Pageable pageable = PageRequest.of(page, 4);
-			Page<User> p = userService.getAll(pageable);
-			response.put("data", p);
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
-		} catch (Exception e) {
-			response.put("error", "Error al realizar la consulta select a la base de datos");
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-
-	}
-    @Secured({"ROLE_ADMIN"})
-    @GetMapping(value = "/shu/{id}")
-    public ResponseEntity<?> show(@PathVariable Long id){
+	@Secured({"ROLE_ADMIN"})
+    @GetMapping(value = "/user")
+    public ResponseEntity<?> show(@RequestParam("id") Long id){
         Map<String, Object> response = new HashMap<>();
-        User u = null;
+        UserDTO u = null;
         try{
             u = userService.findById(id);
         }catch (DataAccessException e){
@@ -79,11 +70,11 @@ public class UserController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
-    @Secured("ROLE_ADMIN")
-    @PostMapping(path = "/ctu")
-    public ResponseEntity<?> create(@Valid @RequestBody User user, BindingResult result){
+	@Secured({"ROLE_ADMIN"})
+    @PostMapping(path = "/user")
+    public ResponseEntity<?> create(@Valid @RequestBody UserDTO userDTO, BindingResult result){
         Map<String, Object> response = new HashMap<>();
-        User u = null;
+        UserDTO u = null;
 
         if(result.hasErrors()){
             List<String> errors = result.getFieldErrors().stream()
@@ -95,7 +86,7 @@ public class UserController {
         }
 
         try {
-            u = userService.save(user);
+            u = userService.save(userDTO);
         }catch (DataAccessException e){
             response.put("message", "Error al realizar la consulta a la base de datos");
             response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
@@ -105,14 +96,30 @@ public class UserController {
         response.put("data", u);
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
-
-    @Secured("ROLE_ADMIN")
-    @PutMapping(value = "/upu/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody User user, BindingResult result,
-                                    @PathVariable Long id){
+    
+    @PatchMapping(path = "/user")
+    public ResponseEntity<?> addRoleToUser(@RequestParam("userId") Long userId, @RequestParam("roleId") Long roleId){
         Map<String, Object> response = new HashMap<>();
-        User current = userService.findById(id);
-        User updateUser = null;
+        UserDTO userDTO = null;
+        try {
+            userDTO = userService.addRoleToUser(userId, roleId);
+        }catch (DataAccessException e){
+            response.put("message", "Error al realizar la consulta a la base de datos");
+            response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        response.put("message", "El rol ha sido asignado con exito");
+        response.put("data", userDTO);
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+    }
+
+	@Secured({"ROLE_ADMIN"})
+    @PutMapping(path = "/user")
+    public ResponseEntity<?> update(@Valid @RequestBody UserDTO userDTO, BindingResult result,
+    		@RequestParam("id") Long id){
+        Map<String, Object> response = new HashMap<>();
+        
+        UserDTO responseUser = userService.update(userDTO, id);
 
         if(result.hasErrors()){
             List<String> errors = result.getFieldErrors().stream()
@@ -121,41 +128,30 @@ public class UserController {
             response.put("errors", errors);
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
         }
-        if (current == null) {
+        if (responseUser == null) {
             response.put("message", "Error no se pudo editar el usuario con ID: "
                     .concat(id.toString().concat(" no existe en la base de datos")));
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
 
         try {
-            current.setFirstname(user.getFirstname());
-            current.setLastname(user.getLastname());
-            current.setTelephone(user.getTelephone());
-            current.setAddress(user.getAddress());
-            current.setAge(user.getAge());
-            current.setDni(user.getDni());
-            current.setEmail(user.getEmail());
-            current.setRoles(user.getRoles());
-            current.setPassword(user.getPassword());
-            current.setCreateAt(user.getCreateAt());
-            current.setUpdateAt(user.getUpdateAt());
-            updateUser = userService.save(current);
             response.put("message", "El usuario ha sido actualizado con exito!");
-            response.put("data", updateUser);
+            response.put("data", responseUser);
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
         }catch (DataAccessException e){
             response.put("message", "Error al realizar la consulta en la base de datos");
             response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+       
     }
 
-    @Secured("ROLE_ADMIN")
-    @DeleteMapping(value = "/du/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id){
+	@Secured({"ROLE_ADMIN"})
+    @DeleteMapping(path = "/user")
+    public ResponseEntity<?> delete(@RequestParam("id") Long id) {
         Map<String, Object> response = new HashMap<>();
         try {
-            User u = userService.findById(id);
+            UserDTO u = userService.findById(id);
             userService.deleteById(id);
             response.put("message", "El usuario ha sido eliminado con exito!");
             response.put("data", u);

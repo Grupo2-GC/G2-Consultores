@@ -1,7 +1,6 @@
 package com.fisi.sgapcbackend.entities;
 
 import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,12 +13,16 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -36,17 +39,17 @@ public class PurchaseOrderDetail implements Serializable{
     private Long id;
 	
 	//@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-    //@ManyToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(name = "purchase_order_id", referencedColumnName = "id")
-    //private PurchaseOrder purchaseorder;
+    @ManyToOne
+    @JoinColumn(name = "purchase_order_id", referencedColumnName = "id")
+    private PurchaseOrder purchaseorder;
 	
 	private Float price;
 	
 	private Integer quantity;
 	
 	private Float amount;
-	
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;

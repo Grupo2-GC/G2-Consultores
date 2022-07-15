@@ -2,7 +2,7 @@ package com.fisi.sgapcbackend.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 //import javax.persistence.CascadeType;
@@ -20,12 +20,16 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -38,7 +42,7 @@ public class PurchaseOrder implements Serializable {
     
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "supplier_id")
+    @JoinColumn(name = "supplier_id", referencedColumnName = "id")
 	private Supplier supplier;
     
     
@@ -49,20 +53,16 @@ public class PurchaseOrder implements Serializable {
     @Column(name = "date_delivery", columnDefinition = "TIMESTAMP")
     private LocalDateTime dateDelivery;
     
-    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    @JsonIgnoreProperties(value={"hibernateLazyInitializer", "handler" })
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
 	private User user;
     
     
-    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "purchase_order_id")
-    private List<PurchaseOrderDetail> purchaseorderDetail;
-    
-    //@OneToMany(mappedBy = "purchaseorder" , targetEntity = PurchaseOrderDetail.class)
-	//private List<PurchaseOrderDetail> purchaseorderDetail;
-   
+    @JsonIgnoreProperties(value= {"hibernateLazyInitializer", "handler" })
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "purchaseorder")
+    private Set<PurchaseOrderDetail> purchaseroderdetail;
+
     
     private String num_receipt;
     

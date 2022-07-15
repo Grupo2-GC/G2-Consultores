@@ -1,14 +1,22 @@
 package com.fisi.sgapcbackend.entities;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 
-@Data
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -22,8 +30,14 @@ public class Category implements Serializable {
     private String name;
     @Column(length = 120)
     private String description;
-    @Column(name = "create_at", columnDefinition = "TIMESTAMP")
-    private LocalDateTime createAt;
-    @Column(name = "update_at", columnDefinition = "TIMESTAMP")
-    private LocalDateTime updateAt;
+    
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
+    private Set<Product> products = new HashSet<Product>();
+    
+    public void addProduct(Product product) {
+    	product.setCategory(this);
+    	products.add(product);
+    }
+    
 }
