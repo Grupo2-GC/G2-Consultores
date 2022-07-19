@@ -1,4 +1,4 @@
-package com.fisi.sgapcbackend.dtos;
+package com.fisi.sgapcbackend.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

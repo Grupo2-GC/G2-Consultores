@@ -1,4 +1,4 @@
-import { clienteAxiosValhalla } from "./axios";
+import { clienteAxios, clienteAxiosValhalla } from "./axios";
 
 export const Authorization = token => {
     if (token) {
@@ -7,5 +7,13 @@ export const Authorization = token => {
     }
     else{
         delete clienteAxios.defaults.headers.common['Authorization']
+    }
+}
+export const tokenAuth = token => {
+    if (token) {
+        clienteAxios.defaults.headers.common['x-token'] = token;
+    }
+    else{
+        delete clienteAxios.defaults.headers.common['x-token']
     }
 }

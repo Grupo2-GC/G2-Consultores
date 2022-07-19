@@ -2,17 +2,15 @@ package com.fisi.sgapcbackend.services;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.fisi.sgapcbackend.dto.ProductDTO;
+import com.fisi.sgapcbackend.response.ProductResponse;
 
-import com.fisi.sgapcbackend.entities.Product;
-
-public interface IProductService extends IGenericCRUD<Product,Long>{
+public interface IProductService extends IGenericCRUD<ProductDTO,Long>{
 	
-	public Page<Product> getAll(Pageable pageable);
+	public ProductResponse getAll(int numberOfPage, int sizeOfPage, String sortPeer, String sortDir);
 	
-	public List<Product> findProductByName(String term);
+	public List<ProductDTO> findProductByName(String term);
 	
-	public List<Product> findProductByCode(String term);
+	public List<ProductDTO> findProductByCode(String term);
 
 }

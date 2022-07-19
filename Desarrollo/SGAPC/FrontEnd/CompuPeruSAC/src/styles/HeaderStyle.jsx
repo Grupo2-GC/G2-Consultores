@@ -9,6 +9,7 @@ export const ContenedorBotones = styled.div`
     padding: 20px 50px;
     display: flex;
     /* cursor: pointer; */
+    gap: 20px;
     justify-content: space-between;
     @media screen and (max-width: 1500px) {
         padding: 20px 40px; 
@@ -30,6 +31,18 @@ export const Boton = styled.div`
     @media screen and (max-width: 1500px) {
         padding: 15px; 
     }
+`
+export const UserStyle = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0438af;
+  border-radius: 10px;
+  color: #fff;
+  text-align: center;
+  span{
+    padding: 10px 30px;
+  }
 `
 export const BoxIcon = styled.div`
   display: flex;

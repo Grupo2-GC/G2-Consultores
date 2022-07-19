@@ -2,17 +2,16 @@ package com.fisi.sgapcbackend.services;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
-import com.fisi.sgapcbackend.entities.Supplier;
+import com.fisi.sgapcbackend.dto.SupplierDTO;
+import com.fisi.sgapcbackend.response.SupplierResponse;
 
-public interface ISupplierService extends IGenericCRUD<Supplier, Long>{
+public interface ISupplierService extends IGenericCRUD<SupplierDTO, Long>{
 	
-	public Page<Supplier> getAll(Pageable pageable);
+	public SupplierResponse getAll(int numberOfPage, int sizeOfPage, String sortPeer, String sortDir);
 	
-	public List<Supplier> findSupplierByBusinnessName(String term);
+	public List<SupplierDTO> findSupplierByBusinnessName(String term);
 	
-	public List<Supplier> findSupplierByRuc(String term);
+	public List<SupplierDTO> findSupplierByRuc(String term);
 
 }

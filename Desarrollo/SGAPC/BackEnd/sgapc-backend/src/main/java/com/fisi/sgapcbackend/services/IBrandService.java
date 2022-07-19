@@ -1,6 +1,13 @@
 package com.fisi.sgapcbackend.services;
 
-import com.fisi.sgapcbackend.entities.Brand;
 
-public interface IBrandService extends IGenericCRUD<Brand, Long>{
+import java.util.List;
+
+import com.fisi.sgapcbackend.dto.BrandDTO;
+import com.fisi.sgapcbackend.response.BrandResponse;
+
+public interface IBrandService extends IGenericCRUD<BrandDTO, Long>{
+	public BrandResponse getAll(int numberOfPage, int sizeOfPage, String sortPeer, String sortDir);
+	public List<BrandDTO> findBrandByName(String name);
+
 }

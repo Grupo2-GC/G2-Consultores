@@ -1,6 +1,14 @@
 package com.fisi.sgapcbackend.services;
 
-import com.fisi.sgapcbackend.entities.Role;
+import java.util.Optional;
 
-public interface IRoleService extends IGenericCRUD<Role, Long>{
+import com.fisi.sgapcbackend.dto.RoleDTO;
+import com.fisi.sgapcbackend.entities.Role;
+import com.fisi.sgapcbackend.response.RoleResponse;
+
+public interface IRoleService extends IGenericCRUD<RoleDTO, Long>{
+	public RoleResponse getAll(int numberOfPage, int sizeOfPage, String sortPeer, String sortDir);
+	
+	public Optional<Role> findByName(String name);
+
 }

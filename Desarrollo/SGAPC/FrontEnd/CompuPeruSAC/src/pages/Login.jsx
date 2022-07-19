@@ -40,13 +40,13 @@ const Login = ({ authLogin }) => {
   }, [autenticado, navigate, errorLogin, ResetError]);
 
   const [usuario, setUsuario] = useState({
-    usernameOrEmail: "",
+    email: "",
     password: "",
   });
   const [error, setError] = useState(false);
   const [errorMensaje, setErrorMensaje] = useState("");
   //extraer usuario
-  const { usernameOrEmail, password } = usuario;
+  const { email, password } = usuario;
   const handleChange = (e) => {
     setUsuario({
       ...usuario,
@@ -56,7 +56,7 @@ const Login = ({ authLogin }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     //validar que no haya campos vacios
-    if (usernameOrEmail.trim() === "" || password.trim() === "") {
+    if (email.trim() === "" || password.trim() === "") {
       setError(true);
       setErrorMensaje("Todos los campos son obligatorios");
       setTimeout(() => {
@@ -73,8 +73,8 @@ const Login = ({ authLogin }) => {
       }, 5000);
       return;
     }
-    // console.log({ usernameOrEmail, password });
-    iniciarSesion({ usernameOrEmail, password });
+    // console.log({ email, password });
+    iniciarSesion({ email, password });
   };
   return (
     <ContenedorLogin>
@@ -95,10 +95,10 @@ const Login = ({ authLogin }) => {
               <FormBox>
                 <input
                   type="text"
-                  id="usernameOrEmail"
-                  name="usernameOrEmail"
+                  id="email"
+                  name="email"
                   placeholder="Usuario"
-                  value={usernameOrEmail}
+                  value={email}
                   onChange={handleChange}
                 />
                 <i className="far fa-user-circle" aria-hidden="true"></i>

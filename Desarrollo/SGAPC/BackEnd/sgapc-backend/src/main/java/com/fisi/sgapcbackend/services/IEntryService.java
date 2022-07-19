@@ -1,12 +1,9 @@
 package com.fisi.sgapcbackend.services;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.fisi.sgapcbackend.dto.EntryDTO;
+import com.fisi.sgapcbackend.response.EntryResponse;
 
-import com.fisi.sgapcbackend.entities.Entry;
-
-public interface IEntryService extends IGenericCRUD<Entry, Long>{
-	
-	public Page<Entry> getAll(Pageable pageable);
+public interface IEntryService extends IGenericCRUD<EntryDTO, Long>{
+	public EntryResponse getAll(int numberOfPage, int sizeOfPage, String sortPeer, String sortDir);
 
 }

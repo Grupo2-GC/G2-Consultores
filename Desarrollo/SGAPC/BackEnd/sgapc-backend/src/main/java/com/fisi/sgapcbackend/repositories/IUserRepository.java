@@ -10,6 +10,10 @@ import java.util.Optional;
 
 @Repository
 public interface IUserRepository extends JpaRepository<User, Long> {
+	
+	//public List<User> findByRoles(Set<Role> roles);
+
+
     Optional<User> findByUsername(String username);
 
     @Query("SELECT u FROM User u WHERE u.username = ?1")

@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.fisi.sgapcbackend.entities.Brand;
+import com.fisi.sgapcbackend.entities.Category;
 import com.fisi.sgapcbackend.entities.Product;
 
 @Repository
@@ -23,4 +25,8 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
 	public List<Product> findByCodeContainingIgnoreCase(String term);
 	
 	public List<Product> findByCodeStartingWithIgnoreCase(String term);
+	
+	//Busqueda por Categoria y marca
+	public List<Product> findByBrand(Brand brand);
+	public List<Product> findByCategory(Category category);
 }

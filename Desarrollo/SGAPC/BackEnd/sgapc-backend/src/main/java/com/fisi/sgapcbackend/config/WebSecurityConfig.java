@@ -18,7 +18,6 @@ import com.fisi.sgapcbackend.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -76,21 +75,11 @@ public class WebSecurityConfig {
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
 			.authorizeRequests()
-			.antMatchers("/auth/**").permitAll()
+			.antMatchers("/api/auth/**").permitAll()
 			.antMatchers("/v2/api-docs/**").permitAll()
 			.antMatchers("/swagger-ui/**").permitAll()
 			.antMatchers("/swagger-ui.html").permitAll()
 			.antMatchers("/swagger-resources/**").permitAll()
-            .antMatchers(HttpMethod.GET,"/user/**").permitAll()
-            .antMatchers(HttpMethod.GET,"/role/**").permitAll()
-            .antMatchers(HttpMethod.GET,"/brand/**").permitAll()
-            .antMatchers("/images/**").permitAll()
-            .antMatchers(HttpMethod.GET,"/customer/**").permitAll()
-            .antMatchers(HttpMethod.GET,"/entry/**").permitAll()
-            .antMatchers(HttpMethod.GET,"/product/**").permitAll()
-            .antMatchers(HttpMethod.GET,"/role/**").permitAll()
-            .antMatchers(HttpMethod.GET,"/supplier/**").permitAll()
-            .antMatchers(HttpMethod.GET,"/withdrawal/**").permitAll()
 			.anyRequest().authenticated()
 			.and().cors().configurationSource(corsConfigurationSource())
 			.and().authenticationManager(authenticationManager);

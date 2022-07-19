@@ -2,17 +2,16 @@ package com.fisi.sgapcbackend.services;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
-import com.fisi.sgapcbackend.entities.Customer;
+import com.fisi.sgapcbackend.dto.CustomerDTO;
+import com.fisi.sgapcbackend.response.CustomerResponse;
 
 
-public interface ICustomerService extends IGenericCRUD<Customer, Long>{
+public interface ICustomerService extends IGenericCRUD<CustomerDTO, Long>{
 	
-	public Page<Customer> getAll(Pageable pageable);
+	public CustomerResponse getAll(int numberOfPage, int sizeOfPage, String sortPeer, String sortDir);
 	
-	public List<Customer> findCustomerByFullname(String firstname, String lastname);
+	public List<CustomerDTO> findCustomerByFullname(String firstname, String lastname);
 	
-	public List<Customer> findCustomerByDni(String term);
+	public List<CustomerDTO> findCustomerByDni(String term);
 }

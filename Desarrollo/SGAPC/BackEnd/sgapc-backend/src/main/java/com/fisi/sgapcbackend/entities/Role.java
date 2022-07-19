@@ -1,13 +1,22 @@
 package com.fisi.sgapcbackend.entities;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
-@Data
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -19,4 +28,18 @@ public class Role implements Serializable {
     private Long id;
     @Column(unique = true, length = 60)
     private String name;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users = new HashSet<>();
+    
+    public void addUser(User user) {
+    	this.users.add(user);
+    	user.getRoles().add(this);
+    }
+    
+    public void removeUser(User user) {
+    	this.users.remove(user);
+    	user.getRoles().remove(this);
+    }
+   
 }
