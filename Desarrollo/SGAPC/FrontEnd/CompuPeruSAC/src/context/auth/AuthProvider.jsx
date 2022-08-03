@@ -35,7 +35,7 @@ export const AuthProvider = ({children}) => {
             console.log(error.response)
             dispatch({
                 type: types.LOGIN_ERROR,
-                payload: error.response.data.errores[0].msg
+                payload: error.response.data.msg
             })
         }
     }

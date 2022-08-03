@@ -1,59 +1,36 @@
-import React, {useContext, useEffect, useState} from 'react'
-import { ContenedorModulo, TitlePage } from '../styles/UsablesStyle'
-import ModalConfirmaion from '../components/ModalConfirmaion'
+import React, { useContext, useEffect, useState } from "react";
 import { ColaboradorContext } from "../context/colaboradores/ColaboradorProvider";
-import { ErrorFormulario } from "../components/ErrorFormulario";
-import {ErrorFormLogin,Formulario,Box1,TitleForm,Hr,GridForm,GrupoForm,LabelForm,InputForm,SelectForm,BotonForm  } from "../styles/FormularioRegistrar"
+import { Overlay, ContenedorModal, CerrarModalStyle } from "../styles/ModalStyle";
+import {Formulario,Box1,TitleForm,GridForm,GrupoForm,LabelForm,InputForm,SelectForm,BotonForm, Hr } from "../styles/FormularioRegistrar"
+const ModalEdit = ({modal,setModal}) => {
+    const {resetColaboradorActual,idColaborador,colaboradores,actualizarColaborador} = useContext(ColaboradorContext)
+    
+   useEffect(() => {
+     const existeId = colaboradores.find(item => item._id === idColaborador)
+      if (existeId) {
+        setColaborador(existeId)
+      }
+   },[idColaborador,colaboradores])
 
 
-const CrearPersonal = () => {
-  const { agregarColaborador,errorForm,resetearErrores,errorFormulario,resetForm } = useContext(ColaboradorContext);
-
-  const [errorColaborador,setErrorColaborador] = useState(false)
-  const [errorMensaje,setErrorMensaje] = useState('')
-  const [modal, setModal] = useState(false);
-  const [colaborador, setColaborador] = useState({
-    first_name: "",
-    last_name:"",
-    dni:"",
-    gender:"",
-    birthday:"",
-    age:"",
-    email:"",
-    phone:"",
-    enterprise:"",
-    headquarter:"",
-    area:"",
-    profile:"",
-    admission_date:"",
-    departure_date:""
-  });
-
-  const { 
-    first_name,
-    last_name,
-    dni,
-    gender,
-    birthday,
-    age,
-    email,
-    phone,
-    enterprise,
-    headquarter,
-    area,
-    profile,
-    admission_date,
-    departure_date } = colaborador;
-  const handleChange = (e) => {
-    setColaborador({
-      ...colaborador,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if ([first_name, 
+    const [colaborador, setColaborador] = useState({
+      first_name: "",
+      last_name:"",
+      dni:"",
+      gender:"",
+      birthday:"",
+      age:"",
+      email:"",
+      phone:"",
+      enterprise:"",
+      headquarter:"",
+      area:"",
+      profile:"",
+      admission_date:"",
+      departure_date:""
+    });  
+    const { 
+      first_name,
       last_name,
       dni,
       gender,
@@ -66,65 +43,43 @@ const CrearPersonal = () => {
       area,
       profile,
       admission_date,
-      departure_date ].includes("")) {
-      setErrorColaborador(true);
-      setErrorMensaje("Todos los campos son obligatorios");
-      setTimeout(() => {
-        setErrorColaborador(false);
-        resetearErrores();
-      }, 4000);
-      return;
-    }
-    if (errorForm) {
-      setErrorColaborador(true);
-      setErrorMensaje(errorFormulario);
-      setTimeout(() => {
-        setErrorColaborador(false);
-        resetearErrores();
-      }, 4000);
-      return;
-    }
-    console.log(colaborador);
-    agregarColaborador(colaborador)
-  }
-  useEffect(() => {
-    if (resetForm) {
-      setModal(true)
-      resetearErrores()
+      departure_date } = colaborador;
+    
+      
+    const handleChange = (e) => {
       setColaborador({
-        first_name: "",
-        last_name:"",
-        dni:"",
-        gender:"",
-        birthday:"",
-        age:"",
-        email:"",
-        phone:"",
-        enterprise:"",
-        headquarter:"",
-        area:"",
-        profile:"",
-        admission_date:"",
-        departure_date:""
-      })
-    }
-  }, [resetForm]);
+        ...colaborador,
+        [e.target.name]: e.target.value,
+      });
+        
 
+      };
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        setColaborador({
+          ...colaborador,
+          [e.target.name]: e.target.value,
+        });
+        actualizarColaborador(colaborador);
+        setModal(false);
+        // navigate('listado')
+      }
+
+    const CerrarModal = () => {
+        setModal(false);
+        resetColaboradorActual();
+        
+    }
   return (
     <>
-    <ModalConfirmaion modal={modal} setModal={setModal} />
-    <ContenedorModulo>
-        <TitlePage tabla="tabla">
-          <h1>Crear Personal</h1>
-          <h4>Gestión Personal</h4>
-        </TitlePage>
-        <br />
+       {modal && (<Overlay>
+        <ContenedorModal>
+        <CerrarModalStyle onClick={CerrarModal} >X</CerrarModalStyle>
         <Formulario autoComplete="off" >
         <Box1>
           <TitleForm>Informacion del Colaborador</TitleForm>
           <br />
           <Hr />
-          <br />
           <GridForm>
             {/* Nombres */}
             <GrupoForm>
@@ -191,64 +146,63 @@ const CrearPersonal = () => {
             </GrupoForm>
             {/* Fecha de nacimiento */}
             <GrupoForm>
-              <LabelForm htmlFor="birthday">
-                Fecha de nacimiento
-              </LabelForm>
-              <div>
-                <InputForm
-                  type="date"
-                  name="birthday"
-                  id="birthday"
-                  value={birthday}
-                  onChange={handleChange}
-                />
-              </div>
-            </GrupoForm>
+                    <LabelForm htmlFor="birthday">
+                      Fecha de nacimiento
+                    </LabelForm>
+                    <div>
+                      <InputForm
+                        type="date"
+                        name="birthday"
+                        id="birthday"
+                        value={birthday}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </GrupoForm>
             {/* Edad */}
             <GrupoForm>
-              <LabelForm htmlFor="age">
-                Edad
-              </LabelForm>
-              <div>
-                <InputForm
-                  type="number"
-                  name="age"
-                  id="age"
-                  value={age}
-                  onChange={handleChange}
-                />
-              </div>
+            <LabelForm htmlFor="age">
+                      Edad
+                    </LabelForm>
+                    <div>
+                      <InputForm
+                        type="number"
+                        name="age"
+                        id="age"
+                        value={age}
+                        onChange={handleChange}
+                      />
+                    </div>
             </GrupoForm>
             {/* Correo electronico */}
             <GrupoForm>
-              <LabelForm htmlFor="email">
-                Correo electrónico
-              </LabelForm>
-              <div>
-                <InputForm
-                  type="email"
-                  name="email"
-                  id="email"
-                  autoComplete="new-password"
-                  value={email}
-                  onChange={handleChange}
-                />
-              </div>
+            <LabelForm htmlFor="email">
+                      Correo electrónico
+                    </LabelForm>
+                    <div>
+                      <InputForm
+                        type="email"
+                        name="email"
+                        id="email"
+                        value={email}
+                        onChange={handleChange}
+                      />
+                    </div>
             </GrupoForm>
             {/* Telefono */}
             <GrupoForm>
-              <LabelForm htmlFor="phone">
-                Telefono
-              </LabelForm>
-              <div>
-                <InputForm
-                  type="number"
-                  name="phone"
-                  id="phone"
-                  value={phone}
-                  onChange={handleChange}
-                />
-              </div>
+            <LabelForm htmlFor="phone">
+                      Telefono
+                    </LabelForm>
+                    <div>
+                      <InputForm
+                        type="number"
+                        name="phone"
+                        id="phone"
+                        value={phone}
+                        onChange={handleChange}
+                      />
+                    </div>
             </GrupoForm>
           </GridForm>
         </Box1>
@@ -256,7 +210,6 @@ const CrearPersonal = () => {
           <TitleForm>Informacion de la empresa</TitleForm>
           <br />
           <Hr />
-          <br />
           <GridForm>
             {/* Empresa */}
             <GrupoForm>
@@ -271,7 +224,7 @@ const CrearPersonal = () => {
                   onChange={handleChange}
                 >
                   <option value="">Elegir una opción</option>
-                  <option value="compuPeru">compuPeru</option>
+                  <option value="compuPeru">CompuPeru</option>
                 </SelectForm>
               </div>
             </GrupoForm>
@@ -307,9 +260,10 @@ const CrearPersonal = () => {
                   onChange={handleChange}
                 >
                   <option value="">Elegir una opción</option>
-                  <option value="Logistica">Logistica</option>
-                  <option value="Almacen">Almacen</option>
+                  <option value="Ventas">Ventas</option>
+                  <option value="Mantenimiento">Mantenimiento</option>
                   <option value="Administrador">Administrador</option>
+                  <option value="Almacen">Almacen</option>
                 </SelectForm>
               </div>
             </GrupoForm>
@@ -327,9 +281,9 @@ const CrearPersonal = () => {
                   onChange={handleChange}
                 >
                   <option value="">Elegir una opción</option>
+                  <option value="Empleado">Empleado</option>
                   <option value="Logistica">Logistica</option>
                   <option value="Almacenero">Almacenero</option>
-                  <option value="Administrador">Administrador</option>
                 </SelectForm>
               </div>
             </GrupoForm>
@@ -370,23 +324,19 @@ const CrearPersonal = () => {
               </LabelForm>
               <InputForm
                 type="submit"
-                value="CREAR USUARIO"
+                value="GUARDAR CAMBIOS"
                 className="formulario__btn"
                 onClick={handleSubmit}
               />
             </BotonForm>
           </GridForm>
-          {errorColaborador ? (
-        <ErrorFormLogin>
-          <h3><i className="fas fa-exclamation-circle" aria-hidden="true"></i>&nbsp;&nbsp;{errorMensaje} </h3>
-        </ErrorFormLogin>
-      ) : null}
-      {errorForm ? <ErrorFormulario /> : null}
         </Box1>
       </Formulario>
-      </ContenedorModulo>
+          
+        </ContenedorModal>
+      </Overlay>)}
     </>
   )
 }
 
-export default CrearPersonal
+export default ModalEdit

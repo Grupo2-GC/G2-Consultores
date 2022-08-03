@@ -109,13 +109,44 @@ export const BtnTablaEditar = styled.button`
         cursor: pointer;
         width: 50px;
         background: transparent;
-        color: ${props => props.btnColor==="edit"? "rgb(88, 88, 221)": "#f01c35"};
+        color: ${props => props.btnColor === "edit" ? "rgb(88, 88, 221)" : "#f01c35"};
         
         @media screen and (max-width: 1100px) {
             text-align: right;
             width: auto;
             padding-left: 15px;
     }
+`
+export const BtnStock = styled.button`
+        border: none;
+        color: white;
+        padding: 5px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0px 10px;
+        cursor: pointer;
+        width: 120px;
+        border-radius: 10px;
+        background-color: #10ce91;
+        &.sin_stock{
+            background-color: #f0142f;
+        }
+        @media screen and (max-width: 1100px) {
+            margin: 0px;
+    }
+`
+export const BtnDetalle = styled.button`
+    width: 100px;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px 0px;
+    background-color: white;
+    color: #3257db;
+    border: 2px solid #3257db;
+    border-radius: 50px;
+    cursor: pointer;
 `
 /*Paginacion*/
 export const PaginacionContainer = styled.div`
@@ -125,8 +156,8 @@ export const PaginacionContainer = styled.div`
     align-items: center;
 
     @media screen and (max-width: 1500px){
-        ${props => props.detalles ? 'flex-direction: column;': null}
-        ${props => props.detalles ? 'gap: 20px;': null}
+        ${props => props.detalles ? 'flex-direction: column;' : null}
+        ${props => props.detalles ? 'gap: 20px;' : null}
     }
     @media screen and (max-width: 600px) {
         flex-direction: column;
@@ -258,7 +289,7 @@ export const BtnEstados = styled.button`
     text-decoration: none;
     font-weight: normal;
     border-radius: 5px;
-    background: ${props => props.colorBtn==="saludable"?"#10ce91":"#f0142f"};
+    background: ${props => props.colorBtn === "saludable" ? "#10ce91" : "#f0142f"};
 `
 export const BtnDetalles = styled.button`
     width: 132px;

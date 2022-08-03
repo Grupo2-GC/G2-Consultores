@@ -12,8 +12,12 @@ export const ContainerBox = styled.div`
     }
 `
 export const ImageEscritorio = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
     img{
-        width: 500px;
+        width: 400px;
+        object-fit: content;
         @media screen and (max-width: 1000px) {
             width: 300px;
         }
@@ -26,11 +30,24 @@ export const CardContainer = styled.div`
 
 export const CardSala = styled.div`
     width: 293px;
-    height: 338px;
+    height: auto;
     background: #fff;
     border-radius: 10px;
     box-shadow: 0px 0px 25px 5px rgba(0,0,0,0.1);
     margin-bottom: 30px;
+    padding: 30px 0px;
+`
+export const CardSalaDetalles = styled.div`
+    width: 500px;
+    height: auto;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 25px 5px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+    padding: 30px 0px;
+    @media screen and (max-width: 1000px){
+        width: 293px;
+    }
 `
 export const CardEstado = styled.div`
     padding: 25px;

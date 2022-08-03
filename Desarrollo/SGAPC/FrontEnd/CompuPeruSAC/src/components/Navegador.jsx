@@ -49,7 +49,7 @@ const Navegador = ({ Sidebar }) => {
                                 } `}><div first="first"><div><BiDesktop /> Escritorio</div><span>&nbsp;</span></div></LinkList>}
 
                 </EnlaceBox>
-            {true &&
+            {usuario.usuario.roles[0]==="ADMIN" &&
                 <EnlaceBox >
                     <div onClick={HandleColapsed}><div><FaUserLock /> Personal</div> <MdOutlineControlPoint /></div>
                     {colapsed && <>
@@ -72,49 +72,55 @@ const Navegador = ({ Sidebar }) => {
                     </>}
                 </EnlaceBox>
             }
-            {true &&
+            {usuario.usuario.roles[0]!=="LOGISTICA" &&
                 <EnlaceBox >
                     <div onClick={HandleColapsed2}><div><FaWarehouse /> Almacen</div> <MdOutlineControlPoint /></div>
                     {colapsed2 && <>
                         {phone ? <>
-                            <LinkList onClick={Sidebar} to="articulos"
-                                className={`${urlActual === "/sistema/articulos" ? "link__actual" : null
-                                    } `}><h4><MdOutlineControlPoint /> Articulos</h4></LinkList>
-                            <LinkList onClick={Sidebar} to="categorias"
+                            <LinkList onClick={Sidebar} to="addProducto"
+                                className={`${urlActual === "/sistema/addProducto" ? "link__actual" : null
+                                    } `}><h4><MdOutlineControlPoint />Crear Productos</h4></LinkList>
+                                    <LinkList onClick={Sidebar} to="listarproductos"
+                                className={`${urlActual === "/sistema/listarproductos" ? "link__actual" : null
+                                    } `}><h4><MdOutlineControlPoint />Listar Productos</h4></LinkList>
+                            {/* <LinkList onClick={Sidebar} to="categorias"
                                 className={`${urlActual === "/sistema/categorias" ? "link__actual" : null
-                                    } `}><h4><MdOutlineControlPoint />Categorias</h4></LinkList>
+                                    } `}><h4><MdOutlineControlPoint />Categorias</h4></LinkList> */}
                         </>
                             : <>
-                                <LinkList to="articulos"
-                                    className={`${urlActual === "/sistema/articulos" ? "link__actual" : null
-                                        } `}><h4><MdOutlineControlPoint />Articulos</h4></LinkList>
-                                <LinkList to="categorias"
+                                <LinkList to="addProducto"
+                                    className={`${urlActual === "/sistema/addProducto" ? "link__actual" : null
+                                        } `}><h4><MdOutlineControlPoint />Crear Productos</h4></LinkList>
+                                        <LinkList to="listarproductos"
+                                    className={`${urlActual === "/sistema/listarproductos" ? "link__actual" : null
+                                        } `}><h4><MdOutlineControlPoint />Listar Productos</h4></LinkList>
+                                {/* <LinkList to="categorias"
                                     className={`${urlActual === "/sistema/categorias" ? "link__actual" : null
-                                        } `}><h4><MdOutlineControlPoint />Categorias</h4></LinkList>
+                                        } `}><h4><MdOutlineControlPoint />Categorias</h4></LinkList> */}
                             </>}
                     </>}
                 </EnlaceBox>
             }
 
-            {true &&
+            {usuario.usuario.roles[0]!=="ALMACENERO" &&
                 <EnlaceBox >
                     <div onClick={HandleColapsed3}><div><FaShoppingBag /> Compras</div> <MdOutlineControlPoint /></div>
                     {colapsed3 && <>
                         {phone ? <>
-                            <LinkList onClick={Sidebar} to="addPersonal"
-                                className={`${urlActual === "/sistema/addPersonal" ? "link__actual" : null
-                                    } `}><h4><MdOutlineControlPoint />Crear Personal</h4></LinkList>
-                            <LinkList onClick={Sidebar} to="personal"
+                            <LinkList onClick={Sidebar} to="listarordenes"
+                                className={`${urlActual === "/sistema/listarordenes" ? "link__actual" : null
+                                    } `}><h4><MdOutlineControlPoint />Listado de Ordenes</h4></LinkList>
+                            {/* <LinkList onClick={Sidebar} to="personal"
                                 className={`${urlActual === "/sistema/personal" ? "link__actual" : null
-                                    } `}><h4><MdOutlineControlPoint />Listado de Personal</h4></LinkList>     
+                                    } `}><h4><MdOutlineControlPoint />Listado de Personal</h4></LinkList>      */}
                         </>
                             : <>
-                            <LinkList to="addPersonal"
-                                    className={`${urlActual === "/sistema/addPersonal" ? "link__actual" : null
-                                        } `}><h4><MdOutlineControlPoint />Crear Personal</h4></LinkList>
-                                <LinkList to="personal"
+                            <LinkList to="listarordenes"
+                                    className={`${urlActual === "/sistema/listarordenes" ? "link__actual" : null
+                                        } `}><h4><MdOutlineControlPoint />Lista de Ordenes</h4></LinkList>
+                                {/* <LinkList to="personal"
                                     className={`${urlActual === "/sistema/personal" ? "link__actual" : null
-                                        } `}><h4><MdOutlineControlPoint />Listado de Personal</h4></LinkList>  
+                                        } `}><h4><MdOutlineControlPoint />Listado de Personal</h4></LinkList>   */}
                             </>}
                     </>}
                 </EnlaceBox>

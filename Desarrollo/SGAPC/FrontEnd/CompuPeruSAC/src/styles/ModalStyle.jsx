@@ -3,8 +3,10 @@ import styled from 'styled-components'
 
 export const Overlay = styled.div`
     width: 100%;
-    height: 100%;
-    position: fixed;
+    min-height: 100%;
+    height: auto;
+    /* position: fixed; */
+    position: absolute;
     top: 0;
     left: 0;
     background: rgba(0, 0, 0, .5);
@@ -13,16 +15,20 @@ export const Overlay = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-
+    z-index: 999;
     /* @media screen and (max-height: 900px) {
         padding: 80px;
     } */
+    &.modalDelete{
+        position: fixed;
+    }
 `
+
 export const ContenedorModal = styled.div`
-    /* min-height: 600px; */
+    min-height: 600px;
     background: #fff;
     position: relative; 
-    border-radius: 25px;
+    border-radius: 5px;
     box-shadow: rgba(100, 100, 111, .2) 0px 7px 29px 0px;
     padding: 40px;
 
@@ -38,9 +44,12 @@ export const ContenedorModal = styled.div`
 `
 export const CerrarModalStyle = styled.button`
     position: absolute;
-    right: 50px;
-    top: 30px;
-	padding: 15px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 30px;
+    top: 20px;
+	padding: 15px;
 	border-radius: 50%;
 	color: #fff;
 	border: none;
@@ -49,7 +58,6 @@ export const CerrarModalStyle = styled.button`
 	font-family: 'Roboto', sans-serif;
 	font-weight: 500;
 	transition: background-color .3s ease ;
-
     &:hover {
         background: #0066FF;
     }

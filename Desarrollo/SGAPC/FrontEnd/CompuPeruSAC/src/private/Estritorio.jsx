@@ -21,7 +21,7 @@ const Estritorio = () => {
               <img src="https://th.bing.com/th/id/R.9d116570fe0344ec36296b627838d502?rik=%2bP%2f84FQ04TH5jw&pid=ImgRaw&r=0" alt="estado" />
               <CardInfo1>
                 <p> Rol </p>
-                {usuario.usuario.roles[0]==="GERENTE" && <h4>Administrador</h4> } 
+                {usuario && <h4>{usuario.usuario.roles[0]}</h4> } 
               </CardInfo1>
             </CardEstado>
             <CardInfoSub>

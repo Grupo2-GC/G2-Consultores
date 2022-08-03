@@ -2,8 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { Loading } from "../components/Loading";
 import { ColaboradorContext } from "../context/colaboradores/ColaboradorProvider";
 import ReactPaginate from "react-paginate";
-// import { ModaleEdit } from "../components/ModaleEdit";
-// import { ModalDelete } from "../components/ModalDelete";
 import {
     BoxTable,
     TableStyle,
@@ -18,6 +16,8 @@ import {
     PaginacionBox,
 } from "../styles/TablasStyle";
 import { NoData } from "../components/NoData";
+import ModalDelete from "../components/ModalDelete";
+import ModalEdit from "../components/ModalEdit";
 export const TablaUsuarios = () => {
     const {
         colaboradores,
@@ -62,8 +62,8 @@ export const TablaUsuarios = () => {
 
     return (
         <>
-            {/* <ModaleEdit  modal={modal} setModal={setModal}  />
-    <ModalDelete modalDelete={modalDelete} setModalDelete={setModalDelete} /> */}
+            <ModalEdit modal={modal} setModal={setModal} />
+            <ModalDelete modalDelete={modalDelete} setModalDelete={setModalDelete} />
             <BoxTable>
                 {!cargando ? (
                     <>
@@ -117,7 +117,7 @@ export const TablaUsuarios = () => {
                                                     onClick={() => modalEdit(item)}>
                                                     <i className="far fa-edit iEdit"></i>
                                                 </BtnTablaEditar>
-                                                <BtnTablaEditar 
+                                                <BtnTablaEditar
                                                     onClick={() => modalDeleteOpen(item)}>
                                                     <i className="far fa-trash-alt iDelete"></i>
                                                 </BtnTablaEditar>
@@ -140,20 +140,20 @@ export const TablaUsuarios = () => {
                         ) : <h3> Mostrando 1 - {colaboradores.length} de {totalDatos} resultados </h3>}
                     </CantidadResultados>
                     <PaginacionBox>
-                    <ReactPaginate
-                        previousLabel={<i className="fas fa-angle-left"></i>}
-                        nextLabel={<i className="fas fa-angle-right"></i>}
-                        breakLabel={"..."}
-                        pageCount={totalDePaginas}
-                        marginPagesDisplayed={3}
-                        // pageRangeDisplayed={6}
-                        onPageChange={handlePageClick}
-                        containerClassName={"pagination"}
-                        previousClassName={"anterior"}
-                        nextClassName={"siguiente"}
-                        activeLinkClassName={"activePaginacionFondo"}
-                        activeClassName={"activePaginacionFondo"}
-                    />
+                        <ReactPaginate
+                            previousLabel={<i className="fas fa-angle-left"></i>}
+                            nextLabel={<i className="fas fa-angle-right"></i>}
+                            breakLabel={"..."}
+                            pageCount={totalDePaginas}
+                            marginPagesDisplayed={3}
+                            // pageRangeDisplayed={6}
+                            onPageChange={handlePageClick}
+                            containerClassName={"pagination"}
+                            previousClassName={"anterior"}
+                            nextClassName={"siguiente"}
+                            activeLinkClassName={"activePaginacionFondo"}
+                            activeClassName={"activePaginacionFondo"}
+                        />
                     </PaginacionBox>
                 </PaginacionContainer>
             </BoxTable>

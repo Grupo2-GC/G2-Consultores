@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom';
 import { AuthContext } from '../context/auth/AuthProvider';
 import {
     ContenedorHeader,
@@ -13,6 +14,11 @@ import {
 const Header = ({Sidebar, logout }) => {
     const { cerrarSesion,usuario } = useContext(AuthContext);
     console.log(usuario);
+    const {id} = useParams();
+    const navigate = useNavigate();
+    const Regresar = () => {
+      navigate('/sistema/listarproductos');
+  }
     const CerrarSesion = () => {
         cerrarSesion();
         logout();
@@ -35,6 +41,9 @@ const Header = ({Sidebar, logout }) => {
               )}
               {/* <Tooltip>{`${usuarioName}, ${rolesUsuario}`}</Tooltip> */}
             </UserStyle>
+            {id ? <Boton onClick={Regresar}>
+            <span><i className="fas fa-arrow-left"></i></span> 
+          </Boton>: null}
           <Box1>
             <Boton onClick={CerrarSesion}>
               <span>
